@@ -1,4 +1,8 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
+import {
+  createAsyncThunk,
+  createSlice,
+  type PayloadAction,
+} from '@reduxjs/toolkit'
 
 export type Transaction = {
   id: number
@@ -10,48 +14,57 @@ export type Transaction = {
 
 type TransactionsState = {
   items: Transaction[]
+  loading: boolean
+  error: string | null
 }
 
+export const fetchTransactions = createAsyncThunk(
+  'transactions/fetchTransactions',
+  async () => {
+    const response = await fetch('http://localhost:3001/transactions')
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch transactions')
+    }
+
+    const data: Transaction[] = await response.json()
+
+    return data
+  }
+)
+
 const initialState: TransactionsState = {
-  items: [
-    {
-      id: 1,
-      merchant: 'Tesco',
-      category: 'Groceries',
-      date: '26 Aug',
-      amount: -42.5,
-    },
-    {
-      id: 2,
-      merchant: 'Salary',
-      category: 'Income',
-      date: '25 Aug',
-      amount: 2800,
-    },
-    {
-      id: 3,
-      merchant: 'Netflix',
-      category: 'Subscription',
-      date: '24 Aug',
-      amount: -10.99,
-    },
-    {
-      id: 4,
-      merchant: 'TfL',
-      category: 'Transport',
-      date: '24 Aug',
-      amount: -7.4,
-    },
-  ],
+  items: [],
+  loading: false,
+  error: null,
 }
 
 const transactionsSlice = createSlice({
   name: 'transactions',
   initialState,
+
   reducers: {
     addTransaction: (state, action: PayloadAction<Transaction>) => {
       state.items.unshift(action.payload)
     },
+  },
+
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchTransactions.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
+
+      .addCase(fetchTransactions.fulfilled, (state, action) => {
+        state.loading = false
+        state.items = action.payload
+      })
+
+      .addCase(fetchTransactions.rejected, (state) => {
+        state.loading = false
+        state.error = 'Failed to load transactions'
+      })
   },
 })
 

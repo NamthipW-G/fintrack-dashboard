@@ -1,9 +1,13 @@
+import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+
 import './App.css'
 import Sidebar from './components/Sidebar'
 import SummaryCard from './components/SummaryCard'
 import TransactionTable from './components/TransactionTable'
 import AddTransactionForm from './components/AddTransactionForm'
-
+import { fetchTransactions } from './features/transactions/transactionsSlice'
+import type { AppDispatch } from './app/store'
 
 const summaryCards = [
   {
@@ -24,6 +28,12 @@ const summaryCards = [
 ]
 
 function App() {
+  const dispatch = useDispatch<AppDispatch>()
+
+  useEffect(() => {
+    dispatch(fetchTransactions())
+  }, [dispatch])
+
   return (
     <div className="app">
       <Sidebar />
@@ -33,18 +43,18 @@ function App() {
         <p>Welcome back to FinTrack</p>
 
         <section className="summary-grid">
-  {summaryCards.map((card) => (
-    <SummaryCard
-      key={card.title}
-      title={card.title}
-      value={card.value}
-      subtitle={card.subtitle}
-    />
-  ))}
-</section>
-<AddTransactionForm />
- <TransactionTable />
+          {summaryCards.map((card) => (
+            <SummaryCard
+              key={card.title}
+              title={card.title}
+              value={card.value}
+              subtitle={card.subtitle}
+            />
+          ))}
+        </section>
 
+        <AddTransactionForm />
+        <TransactionTable />
       </main>
     </div>
   )
