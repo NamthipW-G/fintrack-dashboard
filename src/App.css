@@ -54,3 +54,46 @@
   font-size: 14px;
 }
 
+.transactions-section {
+  margin-top: 32px;
+  padding: 24px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+}
+
+.transactions-section h2 {
+  margin-top: 0;
+}
+
+.transactions-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.transactions-table th,
+.transactions-table td {
+  padding: 16px 12px;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.transactions-table th {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.transactions-table tr:last-child td {
+  border-bottom: none;
+}
+.amount {
+  font-weight: 600;
+}
+
+.income {
+  color: #15803d;
+}
+
+.expense {
+  color: #dc2626;
+}
