@@ -2,6 +2,7 @@ import './App.css'
 import Sidebar from './components/Sidebar'
 import SummaryCard from './components/SummaryCard'
 import TransactionTable from './components/TransactionTable'
+import AddTransactionForm from './components/AddTransactionForm'
 
 
 const summaryCards = [
@@ -41,7 +42,7 @@ function App() {
     />
   ))}
 </section>
-
+<AddTransactionForm />
  <TransactionTable />
 
       </main>

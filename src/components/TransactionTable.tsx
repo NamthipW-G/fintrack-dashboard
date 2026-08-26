@@ -1,43 +1,11 @@
-type Transaction = {
-  id: number
-  merchant: string
-  category: string
-  date: string
-  amount: number
-}
-
-const transactions: Transaction[] = [
-  {
-    id: 1,
-    merchant: 'Tesco',
-    category: 'Groceries',
-    date: '26 Aug',
-    amount: -42.5,
-  },
-  {
-    id: 2,
-    merchant: 'Salary',
-    category: 'Income',
-    date: '25 Aug',
-    amount: 2800,
-  },
-  {
-    id: 3,
-    merchant: 'Netflix',
-    category: 'Subscription',
-    date: '24 Aug',
-    amount: -10.99,
-  },
-  {
-    id: 4,
-    merchant: 'TfL',
-    category: 'Transport',
-    date: '24 Aug',
-    amount: -7.4,
-  },
-]
+import { useSelector } from 'react-redux'
+import type { RootState } from '../app/store'
 
 function TransactionTable() {
+  const transactions = useSelector(
+    (state: RootState) => state.transactions.items
+  )
+
   return (
     <section className="transactions-section">
       <h2>Recent Transactions</h2>
@@ -58,16 +26,17 @@ function TransactionTable() {
               <td>{transaction.merchant}</td>
               <td>{transaction.category}</td>
               <td>{transaction.date}</td>
+
               <td
                 className={
-                    transaction.amount > 0
+                  transaction.amount > 0
                     ? 'amount income'
                     : 'amount expense'
                 }
-                >
+              >
                 {transaction.amount > 0 ? '+' : '-'}£
                 {Math.abs(transaction.amount).toFixed(2)}
-                </td>
+              </td>
             </tr>
           ))}
         </tbody>
