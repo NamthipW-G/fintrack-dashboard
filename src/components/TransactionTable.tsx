@@ -2,9 +2,24 @@ import { useSelector } from 'react-redux'
 import type { RootState } from '../app/store'
 
 function TransactionTable() {
-  const transactions = useSelector(
-    (state: RootState) => state.transactions.items
+  const { items: transactions, loading, error } = useSelector(
+  (state: RootState) => state.transactions
   )
+if (loading) {
+  return (
+    <section className="transactions-section">
+      <p>Loading transactions...</p>
+    </section>
+  )
+}
+
+if (error) {
+  return (
+    <section className="transactions-section">
+      <p className="error-message">{error}</p>
+    </section>
+  )
+}
 
   return (
     <section className="transactions-section">

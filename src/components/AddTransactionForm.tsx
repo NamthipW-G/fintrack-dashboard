@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { addTransaction } from '../features/transactions/transactionsSlice'
+import { createTransaction } from '../features/transactions/transactionsSlice'
+import type { AppDispatch } from '../app/store'
 
 function AddTransactionForm() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
 
   const [merchant, setMerchant] = useState('')
   const [category, setCategory] = useState('')
@@ -17,12 +18,11 @@ function AddTransactionForm() {
     }
 
     dispatch(
-      addTransaction({
-        id: Date.now(),
-        merchant,
-        category,
-        date: '26 Aug',
-        amount: Number(amount),
+     createTransaction({
+      merchant,
+      category,
+      date: '27 Aug',
+      amount: Number(amount),
       })
     )
 

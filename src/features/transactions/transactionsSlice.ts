@@ -5,7 +5,7 @@ import {
 } from '@reduxjs/toolkit'
 
 export type Transaction = {
-  id: number
+  id: string
   merchant: string
   category: string
   date: string
@@ -28,6 +28,27 @@ export const fetchTransactions = createAsyncThunk(
     }
 
     const data: Transaction[] = await response.json()
+
+    return data
+  }
+)
+
+export const createTransaction = createAsyncThunk(
+  'transactions/createTransaction',
+  async (transaction: Omit<Transaction, 'id'>) => {
+    const response = await fetch('http://localhost:3001/transactions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(transaction),
+    })
+
+    if (!response.ok) {
+      throw new Error('Failed to create transaction')
+    }
+
+    const data: Transaction = await response.json()
 
     return data
   }
@@ -64,6 +85,9 @@ const transactionsSlice = createSlice({
       .addCase(fetchTransactions.rejected, (state) => {
         state.loading = false
         state.error = 'Failed to load transactions'
+      })
+      .addCase(createTransaction.fulfilled, (state, action) => {
+        state.items.unshift(action.payload)
       })
   },
 })
