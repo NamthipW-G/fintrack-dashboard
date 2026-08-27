@@ -2,7 +2,7 @@
 
 describe('FinTrack Dashboard', () => {
   it('allows a user to add a new transaction', () => {
-    cy.visit('http://localhost:5173')
+    cy.visit('/')
 
     cy.contains('Dashboard').should('be.visible')
 
